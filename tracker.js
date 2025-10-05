@@ -69,10 +69,10 @@
       };
     return sessionStorage.setItem("jw_campaign_origin", JSON.stringify(t)), t;
   }
-  const A = "https://flight.journeywise.io/api/v1/website-event-tracking";
-  function r(n, e) {
-    var u, c, a, _, p, m, I, D, O, k, T;
-    if (!h() || window.JourneyWiseConsentGiven === !1) {
+  const g = "https://api.journeywise.io/api/v1/website-event-tracking";
+  function s(t, e) {
+    var r, a, u;
+    if (!p() || window.JourneyWiseConsentGiven === !1) {
       console.warn(
         "[JourneyWise] Tracking skipped: user opted out or DNT enabled."
       );
