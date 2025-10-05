@@ -1,8 +1,8 @@
-(function (_) {
-  typeof define == "function" && define.amd ? define(_) : _();
+(function (f) {
+  typeof define == "function" && define.amd ? define(f) : f();
 })(function () {
   "use strict";
-  function _() {
+  function f() {
     return crypto.randomUUID
       ? crypto.randomUUID()
       : Math.random().toString(36).substr(2, 10);
@@ -14,11 +14,11 @@
     if (typeof document > "u") return null;
     const t = document.cookie
       .split("; ")
-      .map((o) => o.trim())
-      .find((o) => o.startsWith(`${n}=`));
+      .map((i) => i.trim())
+      .find((i) => i.startsWith(`${n}=`));
     return t ? t.split("=")[1] : null;
   }
-  const a = Object.freeze({
+  const l = Object.freeze({
     PAGE_VIEW: "pageview",
     SESSION_START: "session_start",
     SESSION_END: "session_end",
@@ -36,12 +36,12 @@
   });
   function E() {
     if (!d("jw_user_id")) {
-      const o = _();
-      g("jw_user_id", o, 31536e3);
+      const i = f();
+      g("jw_user_id", i, 31536e3);
     }
     if (!d("jw_session_id")) {
-      const o = _();
-      return g("jw_session_id", o, 1800), !0;
+      const i = f();
+      return g("jw_session_id", i, 1800), !0;
     }
     return !1;
   }
@@ -52,11 +52,11 @@
       t = window.JourneyWiseConsentGiven === !1;
     return !n && !e && !t;
   }
-  function O() {
+  function b() {
     let n = localStorage.getItem("jw_device_id");
-    return n || ((n = _()), localStorage.setItem("jw_device_id", n)), n;
+    return n || ((n = f()), localStorage.setItem("jw_device_id", n)), n;
   }
-  function S() {
+  function y() {
     const n = JSON.parse(sessionStorage.getItem("jw_campaign_origin"));
     if (n) return n;
     const e = new URLSearchParams(window.location.search),
@@ -69,9 +69,9 @@
       };
     return sessionStorage.setItem("jw_campaign_origin", JSON.stringify(t)), t;
   }
-  const k = "https://flight.journeywise.io/api/v1/website-event-tracking";
+  const A = "https://flight.journeywise.io/api/v1/website-event-tracking";
   function r(n, e) {
-    var u, c, l, m, p, f, I, D;
+    var u, c, a, _, p, m, I, D, O, k, T;
     if (!h() || window.JourneyWiseConsentGiven === !1) {
       console.warn(
         "[JourneyWise] Tracking skipped: user opted out or DNT enabled."
@@ -79,85 +79,96 @@
       return;
     }
     const t = d("jw_user_id"),
-      o = d("jw_user_id"),
-      i = S(),
+      i = d("jw_user_id"),
+      o = y(),
       s = {
         identifier: n,
         pageview_id: 409606162,
         platform: "web",
-        utm_tracking: i,
+        utm_tracking: o,
         user_data: {
           anonymous_id: t,
+          email:
+            ((u = e == null ? void 0 : e.fields) == null ? void 0 : u.email) ||
+            void 0,
           workEmail:
-            ((u = e == null ? void 0 : e.fields) == null
-              ? void 0
-              : u.workEmail) || void 0,
-          firstName:
             ((c = e == null ? void 0 : e.fields) == null
               ? void 0
-              : c.firstName) || void 0,
-          lastName:
-            ((l = e == null ? void 0 : e.fields) == null
+              : c.workEmail) || void 0,
+          fullName:
+            ((a = e == null ? void 0 : e.fields) == null
               ? void 0
-              : l.lastName) || void 0,
+              : a.fullName) || void 0,
+          firstName:
+            ((_ = e == null ? void 0 : e.fields) == null
+              ? void 0
+              : _.firstName) || void 0,
+          lastName:
+            ((p = e == null ? void 0 : e.fields) == null
+              ? void 0
+              : p.lastName) || void 0,
           phone:
             ((m = e == null ? void 0 : e.fields) == null
               ? void 0
               : m.phoneNumber) || void 0,
-          companyName:
-            ((p = e == null ? void 0 : e.fields) == null
-              ? void 0
-              : p.companyName) || void 0,
-          companySize:
-            ((f = e == null ? void 0 : e.fields) == null
-              ? void 0
-              : f.companySize) || void 0,
-          jobTitle:
+          company:
             ((I = e == null ? void 0 : e.fields) == null
               ? void 0
-              : I.jobTitle) || void 0,
-          country:
+              : I.company) || void 0,
+          companyName:
             ((D = e == null ? void 0 : e.fields) == null
               ? void 0
-              : D.country) || void 0,
+              : D.companyName) || void 0,
+          companySize:
+            ((O = e == null ? void 0 : e.fields) == null
+              ? void 0
+              : O.companySize) || void 0,
+          jobTitle:
+            ((k = e == null ? void 0 : e.fields) == null
+              ? void 0
+              : k.jobTitle) || void 0,
+          country:
+            ((T = e == null ? void 0 : e.fields) == null
+              ? void 0
+              : T.country) || void 0,
         },
         event: "Website Activity",
         subEvent: n,
         metadata: { additional_data: { ...e } },
         referer: e != null && e.url ? e.url : document.referrer,
-        device_identifier: o,
+        device_identifier: i,
         apiKey: window.__JW_API_KEY__ || "",
       };
-    fetch(k, {
+    fetch(A, {
       method: "POST",
       credentials: "omit",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(s),
-    }).catch((J) => {
-      console.warn("Failed to send JourneyWise event:", J);
+    }).catch((Y) => {
+      console.warn("Failed to send JourneyWise event:", Y);
     });
   }
-  function T(n) {
+  function N(n) {
     const e = {};
-    for (const [t, o] of n.entries()) t.toLowerCase(), (e[t] = o);
+    for (const [t, i] of n.entries()) t.toLowerCase(), (e[t] = i);
     return e;
   }
-  let y = Date.now();
-  const b = E();
+  let S = Date.now();
+  const L = E();
   function w() {
-    r(a.PAGE_VIEW, {
+    r(l.PAGE_VIEW, {
       url: location.href,
       referrer: document.referrer,
       user_agent: navigator.userAgent,
       timestamp: Date.now(),
     }),
-      b && N(),
-      j(),
+      L && j(),
+      R(),
+      W(),
       P(),
-      A(),
-      L();
+      C();
   }
-  function A() {
+  function P() {
     const n = window.__JW_API_KEY__;
     !n ||
       !h() ||
@@ -170,85 +181,85 @@
         timestamp: Date.now(),
       });
   }
-  function N() {
+  function j() {
     const n = d("jw_session_id");
-    r(a.SESSION_START, { session_id: n, timestamp: Date.now() });
+    r(l.SESSION_START, { session_id: n, timestamp: Date.now() });
   }
-  function L() {
+  function C() {
     const n = [25, 50, 75, 100],
       e = new Set();
     window.addEventListener("scroll", () => {
       const t = window.scrollY,
-        o = document.documentElement.scrollHeight - window.innerHeight,
-        i = Math.round((t / o) * 100);
+        i = document.documentElement.scrollHeight - window.innerHeight,
+        o = Math.round((t / i) * 100);
       n.forEach((s) => {
-        i >= s &&
+        o >= s &&
           !e.has(s) &&
           (e.add(s),
-          r(a.SCROLL_DEPTH, {
+          r(l.SCROLL_DEPTH, {
             percent: s,
             url: location.href,
             timestamp: Date.now(),
           }));
       }),
-        (y = Date.now());
+        (S = Date.now());
     });
   }
-  function P({ delayMs: n = 5e4, pageStartTs: e } = {}) {
+  function W({ delayMs: n = 5e4, pageStartTs: e } = {}) {
     const t = typeof e == "number" ? e : performance.timeOrigin || Date.now(),
-      o = "sessionTimeSent";
+      i = "sessionTimeSent";
     setTimeout(() => {
-      const i = Date.now(),
-        s = Math.floor((i - t) / 1e3),
+      const o = Date.now(),
+        s = Math.floor((o - t) / 1e3),
         u = new Date().toISOString().slice(0, 10);
-      localStorage.getItem(o) !== u &&
+      localStorage.getItem(i) !== u &&
         (typeof r == "function" &&
-          typeof a < "u" &&
-          r(a.TIME_ON_PAGE, {
+          typeof l < "u" &&
+          r(l.TIME_ON_PAGE, {
             time_spent: s,
             url: location.href,
             session_id: typeof d == "function" ? d("jw_session_id") : void 0,
-            timestamp: i,
+            timestamp: o,
           }),
-        localStorage.setItem(o, u));
+        localStorage.setItem(i, u));
     }, n);
   }
-  function j() {
+  function R() {
     setInterval(() => {
       const e = Date.now();
-      e - y >= 5 * 60 * 1e3 &&
-        r(a.SESSION_END, { session_id: d("jw_session_id"), timestamp: e });
+      e - S >= 5 * 60 * 1e3 &&
+        r(l.SESSION_END, { session_id: d("jw_session_id"), timestamp: e });
     }, 6e4);
   }
-  function C() {
+  function M() {
     const n = new WeakSet(),
-      e = (i) => {
-        if (n.has(i)) return;
-        n.add(i);
-        const s = i.id || i.name || "unnamed_form";
-        i.addEventListener("submit", (u) => {
-          var f;
+      e = (o) => {
+        if (n.has(o)) return;
+        n.add(o);
+        const s = o.id || o.name || "unnamed_form";
+        o.addEventListener("submit", (u) => {
+          var m;
           const c = u.submitter;
           if (
             !(
               c &&
               (c.formNoValidate ||
-                ((f = c.hasAttribute) == null
+                ((m = c.hasAttribute) == null
                   ? void 0
-                  : f.call(c, "formnovalidate")))
+                  : m.call(c, "formnovalidate")))
             ) &&
-            !i.checkValidity()
+            !o.checkValidity()
           )
             return;
-          const m = new FormData(i),
-            p = T(m);
-          r(a.FORM_SUBMIT, {
+          const _ = new FormData(o),
+            p = N(_);
+          r(l.FORM_SUBMIT, {
             form_id: s,
-            title: i.title || "Unnamed Form",
+            title: o.title || "Unnamed Form",
             status: "submitted",
             fields: p,
             url: location.href,
-            submit_url: i.action || null,
+            submit_url: o.action || null,
             timestamp: Date.now(),
           });
         });
@@ -262,7 +273,7 @@
         subtree: !0,
       });
   }
-  function W() {
+  function U() {
     const n = [
       "pdf",
       "zip",
@@ -277,16 +288,16 @@
     document.addEventListener("click", (e) => {
       const t = e.target.closest("a");
       if (!t) return;
-      const o = t.getAttribute("href");
-      if (!o) return;
-      const i = new URL(o, location.href),
-        s = i.pathname.split(".").pop().toLowerCase(),
+      const i = t.getAttribute("href");
+      if (!i) return;
+      const o = new URL(i, location.href),
+        s = o.pathname.split(".").pop().toLowerCase(),
         u = t.hasAttribute("download"),
         c = n.includes(s);
       (u || c) &&
-        r(a.DOWNLOAD, {
-          file_name: i.pathname.split("/").pop(),
-          file_url: i.href,
+        r(l.DOWNLOAD, {
+          file_name: o.pathname.split("/").pop(),
+          file_url: o.href,
           file_extension: s,
           element_type: "A",
           page_url: location.href,
@@ -294,34 +305,34 @@
         });
     });
   }
-  function R() {
+  function V() {
     const n = new Set(),
       e = () => {
-        document.querySelectorAll("video").forEach((o) => {
-          if (n.has(o)) return;
-          n.add(o);
-          const i = o.id || "unnamed_video";
+        document.querySelectorAll("video").forEach((i) => {
+          if (n.has(i)) return;
+          n.add(i);
+          const o = i.id || "unnamed_video";
           let s = [25, 50, 75, 100],
             u = new Set();
-          o.addEventListener("play", () => {
-            r(a.VIDEO_PLAY, { video_id: i, timestamp: Date.now() });
+          i.addEventListener("play", () => {
+            r(l.VIDEO_PLAY, { video_id: o, timestamp: Date.now() });
           }),
-            o.addEventListener("pause", () => {
-              r(a.VIDEO_PAUSE, {
-                video_id: i,
-                current_time: o.currentTime,
+            i.addEventListener("pause", () => {
+              r(l.VIDEO_PAUSE, {
+                video_id: o,
+                current_time: i.currentTime,
                 timestamp: Date.now(),
               });
             }),
-            o.addEventListener("timeupdate", () => {
-              const c = Math.floor((o.currentTime / o.duration) * 100);
-              s.forEach((l) => {
-                c >= l &&
-                  !u.has(l) &&
-                  (u.add(l),
-                  r(a.VIDEO_WATCH_PERCENTAGE, {
-                    video_id: i,
-                    percent_watched: l,
+            i.addEventListener("timeupdate", () => {
+              const c = Math.floor((i.currentTime / i.duration) * 100);
+              s.forEach((a) => {
+                c >= a &&
+                  !u.has(a) &&
+                  (u.add(a),
+                  r(l.VIDEO_WATCH_PERCENTAGE, {
+                    video_id: o,
+                    percent_watched: a,
                     timestamp: Date.now(),
                   }));
               });
@@ -334,14 +345,14 @@
     }),
       e();
   }
-  function M(n, e = {}) {
+  function J(n, e = {}) {
     const t = {
       ...e,
       url: location.href,
       timestamp: Date.now(),
       visitor_id: d("jw_user_id"),
       session_id: d("jw_session_id"),
-      device_identifier: O(),
+      device_identifier: b(),
     };
     r(n, t);
   }
@@ -351,16 +362,16 @@
         window.__JW_API_KEY__ = e[0];
         break;
       case "track":
-        M(...e);
+        J(...e);
         break;
       default:
         console.warn(`Unknown JourneyWise command: ${n}`);
     }
   }
-  function U(n) {
+  function x(n) {
     n.forEach((e) => v(...e));
   }
-  function V() {
+  function F() {
     const n = history.pushState;
     (history.pushState = function (...e) {
       n.apply(history, e), w();
@@ -370,14 +381,14 @@
   (function () {
     var t;
     const e = ((t = window.JourneyWise) == null ? void 0 : t.q) || [];
-    (window.JourneyWise = function (...o) {
-      v(...o);
+    (window.JourneyWise = function (...i) {
+      v(...i);
     }),
       (window.JourneyWise.q = e),
-      U(e),
+      x(e),
       E(),
       setTimeout(() => {
-        w(), S(), R(), W(), C(), V();
+        w(), y(), V(), U(), M(), F();
       }, 1e3);
   })();
 });
